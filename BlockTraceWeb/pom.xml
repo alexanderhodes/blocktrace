@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.alexanderhodes.blocktrace</groupId>
+    <artifactId>BlockTrace</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <version.javaee>7.0</version.javaee>
+        <version.jboss-javaee>1.0.3.Final</version.jboss-javaee>
+        <version.log4j>2.6.2</version.log4j>
+        <version.resteasy>3.0.19.Final</version.resteasy>
+        <!-- Test -->
+        <version.junit>4.12</version.junit>
+        <version.equalsverifier>1.7.3</version.equalsverifier>
+        <version.arquillian_core>1.1.11.Final</version.arquillian_core>
+        <version.arquillian.wildfly>8.2.1.Final</version.arquillian.wildfly>
+        <version.jboss.resteasy>3.0.12.Final</version.jboss.resteasy>
+        <!-- App servers -->
+        <version.wildfly>10.1.0.Final</version.wildfly>
+        <version.openejb>4.1.0-SNAPSHOT</version.openejb>
+        <version.openejb.javaee-api>6.0-4</version.openejb.javaee-api>
+        <version.tomee>1.1.0-SNAPSHOT</version.tomee>
+        <version.myfaces>2.1.7</version.myfaces>
+        <!-- Hibernate -->
+        <version.hibernate.javax.persistence>1.0.0.Final</version.hibernate.javax.persistence>
+        <version.hibernate.validator>5.2.4.Final</version.hibernate.validator>
+        <version.hibernate.core>5.0.10.Final</version.hibernate.core>
+        <!--Maven Plugins & co -->
+        <version.maven.war.plugin>3.0.0</version.maven.war.plugin>
+        <version.maven.compiler.plugin>3.1</version.maven.compiler.plugin>
+        <version.maven.dependency.plugin>2.10</version.maven.dependency.plugin>
+        <version.maven.surefire.plugin>2.19.1</version.maven.surefire.plugin>
+        <version.maven.failsafe.plugin>2.19.1</version.maven.failsafe.plugin>
+        <version.jrebel>1.1.5</version.jrebel>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+    <dependencyManagement>
+
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${version.hibernate.validator}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>${version.hibernate.javax.persistence}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${version.hibernate.validator}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
+            <version>${version.hibernate.validator}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${version.hibernate.core}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+    </dependencies>
+
+
+    <build>
+        <finalName>blocktrace</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${version.maven.war.plugin}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

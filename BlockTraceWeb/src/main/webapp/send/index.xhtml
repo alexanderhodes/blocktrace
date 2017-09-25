@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="../templates/template.xhtml">
+    <ui:define name="content">
+        <h:form id="sendForm">
+            <script>
+                function showNext () {
+                    if (document.getElementById("sender").style.display === 'block') {
+                        document.getElementById("sender").style.display = "none";
+                        document.getElementById("receiver").style.display = "block";
+
+                        document.getElementById("previous-arrow").className = "previous";
+                        document.getElementById("progress").style.width = "66%";
+                    } else if (document.getElementById("receiver").style.display === 'block') {
+                        document.getElementById("receiver").style.display = "none";
+                        document.getElementById("shipmentDetails").style.display = "block";
+
+                        document.getElementById("next-arrow").className = "next disabled";
+                        document.getElementById("progress").style.width = "100%";
+                    }
+                }
+
+                function showBefore () {
+                    if (document.getElementById("receiver").style.display === 'block') {
+                        document.getElementById("receiver").style.display = "none";
+                        document.getElementById("sender").style.display = "block";
+
+                        document.getElementById("previous-arrow").className = "previous disabled";
+                        document.getElementById("progress").style.width = "33%";
+                    } else if (document.getElementById("shipmentDetails").style.display === 'block') {
+                        document.getElementById("shipmentDetails").style.display = "none";
+                        document.getElementById("receiver").style.display = "block";
+
+                        document.getElementById("next-arrow").className = "next";
+                        document.getElementById("progress").style.width = "66%";
+                    }
+                }
+            </script>
+
+            <div class="page-header">
+                <h1>BlockTrace - sending shipments</h1>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="progress" style="width:33%;" ></div>
+            </div>
+
+            <ul class="pager">
+                <li class="previous disabled" id="previous-arrow" onclick="showBefore()"><a>Previous</a></li>
+                <li class="next" id="next-arrow" onclick="showNext()"><a>Next</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="sender" style="display: block;">
+                    <h3>Sender</h3>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="senderSurname">Surname</label>
+                                <h:inputText type="text" class="form-control" id="senderSurname"
+                                             value="#{sendBean.sender.surname}"></h:inputText>
+                                <h:message for="senderSurname" errorClass="error" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="senderLastName">Last Name</label>
+                                <h:inputText type="text" class="form-control" id="senderLastName"
+                                             value="#{sendBean.sender.lastName}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senderCompany">Company</label>
+                        <h:inputText type="text" class="form-control" id="senderCompany"
+                                     value="#{sendBean.sender.company}"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="senderEmail">E-Mail</label>
+                                <h:inputText type="text" class="form-control" id="senderEmail"
+                                             value="#{sendBean.sender.email}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="senderPhone">Phone</label>
+                                <h:inputText type="text" class="form-control" id="senderPhone"
+                                             value="#{sendBean.sender.phone}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label for="senderStreet">Street</label>
+                                <h:inputText type="text" class="form-control" id="senderStreet"
+                                             value="#{sendBean.sender.address.street}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="senderNumber">Number</label>
+                                <h:inputText type="text" class="form-control" id="senderNumber"
+                                             value="#{sendBean.sender.address.number}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senderDepartment">Department</label>
+                        <h:inputText type="text" class="form-control" id="senderDepartment"
+                                     value="#{sendBean.sender.address.department}"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="senderZipcode">Zip-Code</label>
+                                <h:inputText type="text" class="form-control" id="senderZipcode"
+                                             value="#{sendBean.sender.address.zipCode}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="senderCity">City</label>
+                                <h:inputText type="text" class="form-control" id="senderCity"
+                                             value="#{sendBean.sender.address.city}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="senderCountry">Country</label>
+                                <h:selectOneMenu styleClass="form-control" value="#{sendBean.sender.address.country}"
+                                                 id="senderCountry">
+                                    <f:selectItems value="#{sendBean.countries}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="receiver" style="display: none;">
+                    <h3>Receiver</h3>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="receiverSurame">Surname</label>
+                                <h:inputText type="text" class="form-control" id="receiverSurame"
+                                             value="#{sendBean.receiver.surname}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="receiverLastName">Last Name</label>
+                                <h:inputText type="text" class="form-control" id="receiverLastName"
+                                             value="#{sendBean.receiver.lastName}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="receiverCompany">Company</label>
+                        <h:inputText type="text" class="form-control" id="receiverCompany"
+                                     value="#{sendBean.receiver.company}"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="receiverEmail">E-Mail</label>
+                                <h:inputText type="text" class="form-control" id="receiverEmail"
+                                             value="#{sendBean.receiver.email}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="receiverPhone">Phone</label>
+                                <h:inputText type="text" class="form-control" id="receiverPhone"
+                                             value="#{sendBean.receiver.phone}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label for="receiverStreet">Street</label>
+                                <h:inputText type="text" class="form-control" id="receiverStreet"
+                                             value="#{sendBean.receiver.address.street}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="receiverNumber">Number</label>
+                                <h:inputText type="text" class="form-control" id="receiverNumber"
+                                             value="#{sendBean.receiver.address.number}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="receiverDepartment">Department</label>
+                        <h:inputText type="text" class="form-control" id="receiverDepartment"
+                                     value="#{sendBean.receiver.address.department}"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="receiverZipcode">Zip-Code</label>
+                                <h:inputText type="text" class="form-control" id="receiverZipcode"
+                                             value="#{sendBean.receiver.address.zipCode}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="receiverCity">City</label>
+                                <h:inputText type="text" class="form-control" id="receiverCity"
+                                             value="#{sendBean.receiver.address.city}"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="receiverCountry">Country</label>
+                                <h:selectOneMenu styleClass="form-control" value="#{sendBean.receiver.address.country}"
+                                                 id="receiverCountry">
+                                    <f:selectItems value="#{sendBean.countries}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="shipmentDetails" style="display: none;">
+                    <h3>Shipment Details</h3>
+
+                    <div class="form-group">
+                        <label for="referenceNumber">Reference Number</label>
+                        <h:inputText type="text" class="form-control" id="referenceNumber"
+                                     value="#{sendBean.shipment.referenceNumber}"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="check-box">
+                                <label><h:selectBooleanCheckbox type="checkbox" value="#{sendBean.shipment.pickup}"/>Pickup</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="check-box">
+                                <label><h:selectBooleanCheckbox type="checkbox"
+                                                                value="#{sendBean.shipment.emailNotification}"/>E-Mail Notification</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="shipmentShipmentType">Shipment Type</label>
+                                <h:selectOneMenu styleClass="form-control" value="#{sendBean.shipment.shipmentType}"
+                                                 id="shipmentShipmentType" converter="#{shipmentTypeConverter}">
+                                    <f:selectItems value="#{sendBean.shipmentTypeList}" var="c" itemValue="#{c}"
+                                                   itemLabel="#{c.name}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="errorMessage" style="display: none;" />
+                        <h:messages for="errorMessage"  />
+                    </div>
+                    
+                    <!--  Referenznummer, Abholung, E-Mail Benachrichtigung, Produkt mit Preis, ShipmentType - Größe -->
+                    <div class="form-group">
+                        <h:commandButton type="submit" styleClass="btn btn-default" action="#{sendBean.createShipment()}"
+                                         value="Send">
+                        </h:commandButton>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
