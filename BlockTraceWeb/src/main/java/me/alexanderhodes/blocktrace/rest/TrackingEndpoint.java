@@ -40,7 +40,10 @@ public class TrackingEndpoint {
         // Upload tracking to blockchain
      //   trackingService.uploadTracking(tracking);
         // send response to client
-        return Response.created(UriBuilder.fromResource(Tracking.class).build()).build();
+        
+        
+        return Response.created(UriBuilder.fromResource(Tracking.class).path(tracking.getShipment().getShipmentId())
+        		.build()).build();
     }
 
     /**
