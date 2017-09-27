@@ -43,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.ahodes.passwordgenerator.Main</mainClass>
+                            <mainClass>me.alexanderhodes.blocktrace.client.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
