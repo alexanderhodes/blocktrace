@@ -16,7 +16,7 @@
                 <h:inputText type="text" class="form-control" id="trackingNumber" value="#{trackBean.trackingId}"/>
             </div>
 
-            <div class="container">
+            <div>
                 <h:commandButton type="submit" styleClass="btn btn-default" action="#{trackBean.trackShipment()}"
                                  value="Track" update="progressbar">
                 </h:commandButton>
@@ -42,7 +42,7 @@
                     <h:dataTable styleClass="table" value="#{trackBean.trackingList}" var="array">
                         <h:column>
                             <f:facet name="header">Timestamp</f:facet>
-                            <span>#{array.timestamp}</span>
+                            <span>#{trackBean.dateFormat.format(array.timestamp)}</span>
                         </h:column>
 
                         <h:column>
@@ -58,11 +58,6 @@
                 </div>
 
             </c:if>
-
-            <c:if test="trackBean.trackingList.size() == 0">
-                There are no tracking information available for shipment no: #{trackBean.trackingId}
-            </c:if>
-
         </h:form>
     </ui:define>
 

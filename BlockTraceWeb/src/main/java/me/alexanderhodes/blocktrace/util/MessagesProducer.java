@@ -1,5 +1,6 @@
 package me.alexanderhodes.blocktrace.util;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -11,13 +12,13 @@ public class MessagesProducer {
 
     static {
         try {
-            resourceBundle = ResourceBundle.getBundle("messages");
+            resourceBundle = ResourceBundle.getBundle("messages", Locale.ENGLISH);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static String getValue (String key) {
+    public static String getValue (String key) {
         return resourceBundle.getString(key);
     }
 

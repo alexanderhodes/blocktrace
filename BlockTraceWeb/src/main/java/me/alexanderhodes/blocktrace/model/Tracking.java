@@ -1,15 +1,31 @@
 package me.alexanderhodes.blocktrace.model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by alexa on 23.09.2017.
  */
-public class Tracking {
+@NamedQueries({
+        @NamedQuery(name = Tracking.GET_TRACKINGS_SHIPMENT, query = Tracking.GET_TRACKINGS_SHIPMENT_QUERY)
+})
+@Entity
+public class Tracking implements Serializable {
 
+    public static final String GET_TRACKINGS_SHIPMENT = "Tracking.Shipment";
+    static final String GET_TRACKINGS_SHIPMENT_QUERY = "SELECT t FROM Tracking t WHERE t.shipment.shipmentId = :shipmentId";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @ManyToOne
     private Shipment shipment;
+    @Column
     private ShipmentStatus shipmentStatus;
+    @Column
     private Date timestamp;
+    @Column
     private String place;
 
     public Tracking () {
@@ -21,6 +37,22 @@ public class Tracking {
         this.shipmentStatus = shipmentStatus;
         this.timestamp = timestamp;
         this.place = place;
+    }
+
+    public Tracking (long id, Shipment shipment, ShipmentStatus shipmentStatus, Date timestamp, String place) {
+        this.id = id;
+        this.shipment = shipment;
+        this.shipmentStatus = shipmentStatus;
+        this.timestamp = timestamp;
+        this.place = place;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Shipment getShipment() {

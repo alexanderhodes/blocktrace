@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by alexa on 23.09.2017.
@@ -24,12 +25,19 @@ public class ShipmentService extends AbstractService<Shipment> implements Serial
 
     public Shipment getLatestShipment () {
         TypedQuery<Shipment> typedQuery = entityManager.createNamedQuery(Shipment.GETLATESTSHIPMENT, Shipment.class);
-        if (typedQuery.getFirstResult() != 0) {
-            return typedQuery.getSingleResult();
+
+        List<Shipment> shipments = typedQuery.getResultList();
+        if (shipments != null && shipments.size() > 0) {
+            return shipments.get(0);
         }
         return null;
     }
 
+    /**
+     *
+     * @param shipment
+     * @return
+     */
     public Shipment persist (Shipment shipment) {
         String shipmentId = generateShipmentId();
         shipment.setShipmentId(shipmentId);
@@ -38,6 +46,10 @@ public class ShipmentService extends AbstractService<Shipment> implements Serial
         return shipment;
     }
 
+    /**
+     *
+     * @return
+     */
     public String generateShipmentId () {
         String shipmentId;
 
@@ -66,13 +78,25 @@ public class ShipmentService extends AbstractService<Shipment> implements Serial
         return shipmentId;
     }
 
+    /**
+     *
+     * @param shipmentId
+     * @return
+     */
     private String calculateCheckNumber (String shipmentId) {
         Long id = Long.parseLong(shipmentId);
         return Long.toString(id % 9).toString();
     }
 
+    /**
+     *
+     * @param today
+     * @param latestShipmentId
+     * @return
+     */
     private String checkLatestNumber (String today, String latestShipmentId) {
         String last = latestShipmentId.replace(today, "");
+        last = last.substring(0, last.length()-1);
 
         while (last.startsWith("0")) {
             last = last.substring(1, last.length());
@@ -86,6 +110,5 @@ public class ShipmentService extends AbstractService<Shipment> implements Serial
 
         return l;
     }
-
 
 }

@@ -1,6 +1,5 @@
 package me.alexanderhodes.blocktrace.service;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -34,6 +33,7 @@ public abstract class AbstractService<T> {
         try {
             return entityManager.find(entityClass, id);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

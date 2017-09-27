@@ -9,10 +9,8 @@ import me.alexanderhodes.blocktrace.service.ShipmentService;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 
 /**
  * Created by alexa on 23.09.2017.

@@ -26,7 +26,13 @@ public class ShipmentTypeConverter implements Converter {
         if (s == null || s.isEmpty()) {
             return null;
         } else {
-            return shipmentTypeService.findById(Long.getLong(s));
+            try {
+                long id = Long.parseLong(s);
+                return shipmentTypeService.getShipmentType(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 

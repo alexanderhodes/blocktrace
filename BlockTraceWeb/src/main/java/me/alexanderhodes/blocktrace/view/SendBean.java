@@ -2,6 +2,8 @@ package me.alexanderhodes.blocktrace.view;
 
 import me.alexanderhodes.blocktrace.model.*;
 import me.alexanderhodes.blocktrace.service.*;
+import me.alexanderhodes.blocktrace.util.Constants;
+import me.alexanderhodes.blocktrace.util.MessagesProducer;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
@@ -144,14 +146,21 @@ public class SendBean implements Serializable {
         if (!validateCustomer(sender, "sender") || !validateAddress(sender.getAddress(), "sender")
                 || !validateCustomer(receiver, "receiver") || !validateAddress(receiver.getAddress(), "receiver")) {
             return "";
+        } else if (shipment.getShipmentType()==null) {
+            FacesContext.getCurrentInstance().addMessage("sendForm:shipmentShipmentType",
+                    new FacesMessage("Please select a type for your shipment."));
+            return "";
         } else {
             // saving attributes
             try {
                 addressService.persist(sender.getAddress());
                 addressService.persist(receiver.getAddress());
 
-                customerService.createCustomer(sender);
-                customerService.createCustomer(receiver);
+                sender = customerService.createCustomer(sender);
+                receiver = customerService.createCustomer(receiver);
+
+                shipment.setReceiver(receiver);
+                shipment.setSender(sender);
 
                 shipment = shipmentService.persist(shipment);
             } catch (Exception e) {
@@ -173,6 +182,12 @@ public class SendBean implements Serializable {
             // create first tracking information
             Tracking tracking = new Tracking(shipment, ShipmentStatus.DATARECEIVED, new Date(), "");
             trackingService.uploadTracking(tracking);
+
+            // clean fields after saving data
+            sender = new Customer();
+            receiver = new Customer();
+            shipment = new Shipment ();
+
         }
 
         return "";
@@ -187,22 +202,21 @@ public class SendBean implements Serializable {
     private boolean validateCustomer (Customer customer, String type) {
         if (customer.getSurname() == null || customer.getSurname().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "Surname",
-                    new FacesMessage("Please enter your surname."));
+                    new FacesMessage(MessagesProducer.getValue("send1")));
             return false;
         } else if (customer.getLastName() == null || customer.getLastName().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "LastName",
-                    new FacesMessage("Please enter your lastname."));
+                    new FacesMessage(MessagesProducer.getValue("send2")));
             return false;
-        }else if (!customer.getEmail().matches("")) {
+        } else if (customer.getEmail().length() > 0 && !customer.getEmail().matches(Constants.REGEX_MAIL)) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "Email",
-                    new FacesMessage("Please enter an correct email."));
+                    new FacesMessage(MessagesProducer.getValue("send3")));
             return false;
-        }else if (!customer.getPhone().matches("")) {
+        } else if (customer.getPhone().length() > 0 && !customer.getPhone().matches(Constants.REGEX_TELNUMBER)) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "Phone",
-                    new FacesMessage("Please enter a correct phone number."));
+                    new FacesMessage(MessagesProducer.getValue("send4")));
             return false;
         }
-
         return true;
     }
 
@@ -215,23 +229,23 @@ public class SendBean implements Serializable {
     private boolean validateAddress (Address address, String type) {
         if (address.getStreet() == null || address.getStreet().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "Street",
-                    new FacesMessage("Please enter a street."));
+                    new FacesMessage(MessagesProducer.getValue("send5")));
             return false;
         } else if (address.getNumber() == null || address.getNumber().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "Number",
-                    new FacesMessage("Please enter a number."));
+                    new FacesMessage(MessagesProducer.getValue("send6")));
             return false;
         } else if (address.getZipCode() == null || address.getZipCode().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "ZipCode",
-                    new FacesMessage("Please enter a zip-code."));
+                    new FacesMessage(MessagesProducer.getValue("send7")));
             return false;
         } else if (address.getCity() == null || address.getCity().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "City",
-                    new FacesMessage("Please enter a city."));
+                    new FacesMessage(MessagesProducer.getValue("send8")));
             return false;
         } else if (address.getCountry() == null || address.getCountry().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("sendForm:" + type + "Country",
-                    new FacesMessage("Please select a country."));
+                    new FacesMessage(MessagesProducer.getValue("send9")));
             return false;
         }
 

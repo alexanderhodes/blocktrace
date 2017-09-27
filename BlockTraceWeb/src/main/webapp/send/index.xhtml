@@ -50,8 +50,8 @@
             </div>
 
             <ul class="pager">
-                <li class="previous disabled" id="previous-arrow" onclick="showBefore()"><a>Previous</a></li>
-                <li class="next" id="next-arrow" onclick="showNext()"><a>Next</a></li>
+                <li class="previous disabled" id="previous-arrow" onclick="showBefore()"><a>#{msg['send10']}</a></li>
+                <li class="next" id="next-arrow" onclick="showNext()"><a>#{msg['send11']}</a></li>
             </ul>
 
             <div class="tab-content">
@@ -61,40 +61,44 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="senderSurname">Surname</label>
+                                <label for="senderSurname">#{msg['send12']}</label>
                                 <h:inputText type="text" class="form-control" id="senderSurname"
                                              value="#{sendBean.sender.surname}"></h:inputText>
-                                <h:message for="senderSurname" errorClass="error" />
+                                <h:message for="senderSurname" />
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="senderLastName">Last Name</label>
+                                <label for="senderLastName">#{msg['send13']}</label>
                                 <h:inputText type="text" class="form-control" id="senderLastName"
                                              value="#{sendBean.sender.lastName}"/>
+                                <h:message for="senderLastName" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="senderCompany">Company</label>
+                        <label for="senderCompany">#{msg['send16']}</label>
                         <h:inputText type="text" class="form-control" id="senderCompany"
                                      value="#{sendBean.sender.company}"/>
+                        <h:message for="senderCompany" />
                     </div>
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="senderEmail">E-Mail</label>
+                                <label for="senderEmail">#{msg['send14']}</label>
                                 <h:inputText type="text" class="form-control" id="senderEmail"
                                              value="#{sendBean.sender.email}"/>
+                                <h:message for="senderEmail" />
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="senderPhone">Phone</label>
+                                <label for="senderPhone">#{msg['send15']}</label>
                                 <h:inputText type="text" class="form-control" id="senderPhone"
                                              value="#{sendBean.sender.phone}"/>
+                                <h:message for="senderPhone" />
                             </div>
                         </div>
                     </div>
@@ -102,48 +106,54 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="form-group">
-                                <label for="senderStreet">Street</label>
+                                <label for="senderStreet">#{msg['send17']}</label>
                                 <h:inputText type="text" class="form-control" id="senderStreet"
                                              value="#{sendBean.sender.address.street}"/>
+                                <h:message for="senderStreet" />
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="senderNumber">Number</label>
+                                <label for="senderNumber">#{msg['send18']}</label>
                                 <h:inputText type="text" class="form-control" id="senderNumber"
                                              value="#{sendBean.sender.address.number}"/>
+                                <h:message for="senderNumber" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="senderDepartment">Department</label>
+                        <label for="senderDepartment">#{msg['send19']}</label>
                         <h:inputText type="text" class="form-control" id="senderDepartment"
                                      value="#{sendBean.sender.address.department}"/>
+                        <h:message for="senderDepartment" />
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="senderZipcode">Zip-Code</label>
+                                <label for="senderZipcode">#{msg['send20']}</label>
                                 <h:inputText type="text" class="form-control" id="senderZipcode"
                                              value="#{sendBean.sender.address.zipCode}"/>
+                                <h:message for="senderZipcode" />
                             </div>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="senderCity">City</label>
+                                <label for="senderCity">#{msg['send21']}</label>
                                 <h:inputText type="text" class="form-control" id="senderCity"
                                              value="#{sendBean.sender.address.city}"/>
+                                <h:message for="senderCity" />
                             </div>
                         </div>
                         <div class="col-sm-5">
                             <div class="form-group">
-                                <label for="senderCountry">Country</label>
+                                <label for="senderCountry">#{msg['send22']}</label>
                                 <h:selectOneMenu styleClass="form-control" value="#{sendBean.sender.address.country}"
                                                  id="senderCountry">
                                     <f:selectItems value="#{sendBean.countries}"/>
                                 </h:selectOneMenu>
+                                <h:message for="senderCountry" />
                             </div>
                         </div>
                     </div>
@@ -155,39 +165,44 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="receiverSurame">Surname</label>
-                                <h:inputText type="text" class="form-control" id="receiverSurame"
+                                <label for="receiverSurname">#{msg['send12']}</label>
+                                <h:inputText type="text" class="form-control" id="receiverSurname"
                                              value="#{sendBean.receiver.surname}"/>
+                                <h:message for="receiverSurname" />
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="receiverLastName">Last Name</label>
+                                <label for="receiverLastName">#{msg['send13']}</label>
                                 <h:inputText type="text" class="form-control" id="receiverLastName"
                                              value="#{sendBean.receiver.lastName}"/>
+                                <h:message for="receiverLastName" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="receiverCompany">Company</label>
+                        <label for="receiverCompany">#{msg['send16']}</label>
                         <h:inputText type="text" class="form-control" id="receiverCompany"
                                      value="#{sendBean.receiver.company}"/>
+                        <h:message for="receiverCompany" />
                     </div>
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="receiverEmail">E-Mail</label>
+                                <label for="receiverEmail">#{msg['send14']}</label>
                                 <h:inputText type="text" class="form-control" id="receiverEmail"
                                              value="#{sendBean.receiver.email}"/>
+                                <h:message for="receiverEmail" />
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="receiverPhone">Phone</label>
+                                <label for="receiverPhone">#{msg['send15']}</label>
                                 <h:inputText type="text" class="form-control" id="receiverPhone"
                                              value="#{sendBean.receiver.phone}"/>
+                                <h:message for="receiverPhone" />
                             </div>
                         </div>
                     </div>
@@ -195,48 +210,54 @@
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="form-group">
-                                <label for="receiverStreet">Street</label>
+                                <label for="receiverStreet">#{msg['send17']}</label>
                                 <h:inputText type="text" class="form-control" id="receiverStreet"
                                              value="#{sendBean.receiver.address.street}"/>
+                                <h:message for="receiverStreet" />
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="receiverNumber">Number</label>
+                                <label for="receiverNumber">#{msg['send18']}</label>
                                 <h:inputText type="text" class="form-control" id="receiverNumber"
                                              value="#{sendBean.receiver.address.number}"/>
+                                <h:message for="receiverNumber" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="receiverDepartment">Department</label>
+                        <label for="receiverDepartment">#{msg['send19']}</label>
                         <h:inputText type="text" class="form-control" id="receiverDepartment"
                                      value="#{sendBean.receiver.address.department}"/>
+                        <h:message for="receiverDepartment" />
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="receiverZipcode">Zip-Code</label>
+                                <label for="receiverZipcode">#{msg['send20']}</label>
                                 <h:inputText type="text" class="form-control" id="receiverZipcode"
                                              value="#{sendBean.receiver.address.zipCode}"/>
+                                <h:message for="receiverZipcode" />
                             </div>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <div class="form-group">
-                                <label for="receiverCity">City</label>
+                                <label for="receiverCity">#{msg['send21']}</label>
                                 <h:inputText type="text" class="form-control" id="receiverCity"
                                              value="#{sendBean.receiver.address.city}"/>
+                                <h:message for="receiverCity" />
                             </div>
                         </div>
                         <div class="col-sm-5">
                             <div class="form-group">
-                                <label for="receiverCountry">Country</label>
+                                <label for="receiverCountry">#{msg['send22']}</label>
                                 <h:selectOneMenu styleClass="form-control" value="#{sendBean.receiver.address.country}"
                                                  id="receiverCountry">
                                     <f:selectItems value="#{sendBean.countries}"/>
                                 </h:selectOneMenu>
+                                <h:message for="receiverCountry" />
                             </div>
                         </div>
                     </div>
@@ -246,54 +267,43 @@
                     <h3>Shipment Details</h3>
 
                     <div class="form-group">
-                        <label for="referenceNumber">Reference Number</label>
+                        <label for="referenceNumber">#{msg['send23']}</label>
                         <h:inputText type="text" class="form-control" id="referenceNumber"
                                      value="#{sendBean.shipment.referenceNumber}"/>
+                        <h:message for="referenceNumber" />
                     </div>
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="check-box">
-                                <label><h:selectBooleanCheckbox type="checkbox" value="#{sendBean.shipment.pickup}"/>Pickup</label>
+                                <label><h:selectBooleanCheckbox type="checkbox" value="#{sendBean.shipment.pickup}"/>#{msg['send24']}</label>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="check-box">
                                 <label><h:selectBooleanCheckbox type="checkbox"
-                                                                value="#{sendBean.shipment.emailNotification}"/>E-Mail Notification</label>
+                                                                value="#{sendBean.shipment.emailNotification}"/>#{msg['send25']}</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="shipmentShipmentType">Shipment Type</label>
-                                <h:selectOneMenu styleClass="form-control" value="#{sendBean.shipment.shipmentType}"
-                                                 id="shipmentShipmentType" converter="#{shipmentTypeConverter}">
-                                    <f:selectItems value="#{sendBean.shipmentTypeList}" var="c" itemValue="#{c}"
-                                                   itemLabel="#{c.name}"/>
-                                </h:selectOneMenu>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-
+                        <div class="form-group">
+                            <label for="shipmentShipmentType">#{msg['send26']}</label>
+                            <h:selectOneRadio value="#{sendBean.shipment.shipmentType}" id="shipmentShipmentType"
+                                              converter="#{shipmentTypeConverter}" layout="pageDirection">
+                                <f:selectItems class="radio" value="#{sendBean.shipmentTypeList}" var="s" itemValue="#{s}"
+                                               itemLabel="&nbsp;Parcel up to #{s.weight}kg (max #{s.length} x #{s.width} x #{s.height}cm - #{s.product.price}€" />
+                            </h:selectOneRadio>
+                            <h:message for="shipmentShipmentType" />
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <h:inputText id="errorMessage" style="display: none;" />
-                        <h:messages for="errorMessage"  />
-                    </div>
-                    
-                    <!--  Referenznummer, Abholung, E-Mail Benachrichtigung, Produkt mit Preis, ShipmentType - Größe -->
                     <div class="form-group">
                         <h:commandButton type="submit" styleClass="btn btn-default" action="#{sendBean.createShipment()}"
-                                         value="Send">
+                                         value="#{msg['send27']}">
                         </h:commandButton>
                     </div>
-
-
                 </div>
 
 

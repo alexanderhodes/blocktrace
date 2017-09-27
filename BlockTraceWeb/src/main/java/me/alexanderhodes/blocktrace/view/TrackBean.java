@@ -1,10 +1,10 @@
 package me.alexanderhodes.blocktrace.view;
 
 import me.alexanderhodes.blocktrace.model.Shipment;
-import me.alexanderhodes.blocktrace.model.ShipmentStatus;
 import me.alexanderhodes.blocktrace.model.Tracking;
 import me.alexanderhodes.blocktrace.service.ShipmentService;
 import me.alexanderhodes.blocktrace.service.TrackingService;
+import me.alexanderhodes.blocktrace.util.MessagesProducer;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
@@ -14,8 +14,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +33,7 @@ public class TrackBean implements Serializable {
     @Inject
     private ShipmentService shipmentService;
 
+    private SimpleDateFormat dateFormat;
     private String trackingId;
     private List<Tracking> trackingList;
     private int percentage;
@@ -41,6 +42,15 @@ public class TrackBean implements Serializable {
     @PostConstruct
     public void init () {
         this.trackingList = new ArrayList<>();
+        this.dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    }
+
+    public SimpleDateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(SimpleDateFormat dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     public String getTrackingId() {
@@ -80,9 +90,9 @@ public class TrackBean implements Serializable {
      * @return
      */
     public String trackShipment () {
-        if (trackingId == null || trackingId == "") {
+        if (trackingId == null || trackingId.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
-                    new FacesMessage("Enter a shipment number and select the track button."));
+                    new FacesMessage(MessagesProducer.getValue("track1")));
             return "";
         }
 
@@ -90,51 +100,11 @@ public class TrackBean implements Serializable {
 
         if (shipment == null) {
             FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
-                    new FacesMessage("There are no tracking information available for shipment number " +
-                            trackingId + ". Please try again later."));
+                    new FacesMessage(MessagesProducer.getValue("track2").replace("TRACKINGNO", trackingId)));
             return "";
         } else {
             // Daten aus Blockchain lesen und anzeigen
-//            this.trackingList = trackingService.getTrackingList(trackingId);
-
-            this.trackingList = new ArrayList<>();
-
-            Tracking t1 = new Tracking();
-            t1.setPlace("Abholung im Paketcenter");
-            t1.setShipmentStatus(ShipmentStatus.DATARECEIVED);
-            t1.setTimestamp(new Date());
-
-            Tracking t2 = new Tracking();
-            t2.setPlace("Sendung beim Logistik-Dienstleister eingetroffen");
-            t2.setShipmentStatus(ShipmentStatus.DELIEVERED);
-            t2.setTimestamp(new Date());
-
-            Tracking t3 = new Tracking();
-            t3.setPlace("Sendung beim Logistik-Dienstleister eingetroffen");
-            t3.setShipmentStatus(ShipmentStatus.DELIEVERED);
-            t3.setTimestamp(new Date());
-
-            Tracking t4 = new Tracking();
-            t4.setPlace("Sendung beim Logistik-Dienstleister eingetroffen");
-            t4.setShipmentStatus(ShipmentStatus.DELIEVERED);
-            t4.setTimestamp(new Date());
-
-            Tracking t5 = new Tracking();
-            t5.setPlace("Sendung beim Logistik-Dienstleister eingetroffen");
-            t5.setShipmentStatus(ShipmentStatus.DELIEVERED);
-            t5.setTimestamp(new Date());
-
-            Tracking t6 = new Tracking();
-            t6.setPlace("Sendung beim Logistik-Dienstleister eingetroffen");
-            t6.setShipmentStatus(ShipmentStatus.DELIEVERED);
-            t6.setTimestamp(new Date());
-
-//            trackingList.add(t1);
-//            trackingList.add(t2);
-//            trackingList.add(t3);
-//            trackingList.add(t4);
-//            trackingList.add(t5);
-//            trackingList.add(t6);
+            this.trackingList = trackingService.getTrackingListShipment(trackingId);
 
             if (trackingList.size() == 0) {
                 FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",

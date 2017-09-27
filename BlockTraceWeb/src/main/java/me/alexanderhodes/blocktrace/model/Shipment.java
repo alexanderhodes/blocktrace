@@ -17,8 +17,7 @@ import java.util.Date;
 public class Shipment implements Serializable {
 
     public static final String GETLATESTSHIPMENT = "Latest Shipment";
-    public static final String GETLATESTSHIPMENT_QUERY = "SELECT s FROM Shipment s WHERE s.created = " +
-            "(SELECT max(sl.created) FROM Shipment sl)";
+    public static final String GETLATESTSHIPMENT_QUERY = "SELECT s FROM Shipment s ORDER BY s.created DESC";
 
     @Id
     private String shipmentId;

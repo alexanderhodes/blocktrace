@@ -1,13 +1,14 @@
 package me.alexanderhodes.blocktrace.service;
 
 import com.google.gson.*;
-import me.alexanderhodes.blocktrace.model.Shipment;
 import me.alexanderhodes.blocktrace.model.Tracking;
 
 import javax.ejb.Stateless;
+import javax.persistence.TypedQuery;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -20,14 +21,31 @@ import java.util.List;
  * Created by alexa on 24.09.2017.
  */
 @Stateless
-public class TrackingService {
+public class TrackingService extends AbstractService<Tracking> implements Serializable {
+
+    public TrackingService () {
+        super(Tracking.class);
+    }
+
+    public void persistTracking (Tracking tracking) {
+        entityManager.persist(tracking);
+    }
+
+    public List<Tracking> getTrackingListShipment (String shipmentId) {
+        TypedQuery<Tracking> query = entityManager.createNamedQuery(Tracking.GET_TRACKINGS_SHIPMENT, Tracking.class);
+        query.setParameter("shipmentId", shipmentId);
+
+        List<Tracking> trackings = query.getResultList();
+        return trackings;
+    }
 
     public List<Tracking> getTrackingList () {
         List<Tracking> trackingList = new ArrayList<>();
 
         try {
             // TODO: URL anpassen
-            trackingList = sendRequest("http://localhost:3000/api/");
+            trackingList = listAll();
+//            trackingList = sendRequest("http://localhost:3000/api/");
         } catch (Exception e) {
             e.printStackTrace();
         }

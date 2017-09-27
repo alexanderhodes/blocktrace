@@ -6,8 +6,14 @@ import java.io.Serializable;
 /**
  * Created by alexa on 23.09.2017.
  */
+@NamedQueries(
+        @NamedQuery(name = ShipmentType.GET_SHIPMENTTYPE_ID, query = ShipmentType.GET_SHIPMENTTYPE_ID_QUERY)
+)
 @Entity
 public class ShipmentType implements Serializable {
+
+    public static final String GET_SHIPMENTTYPE_ID = "ShipmentType.Id";
+    static final String GET_SHIPMENTTYPE_ID_QUERY = "SELECT s FROM ShipmentType s WHERE s.id = :id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
