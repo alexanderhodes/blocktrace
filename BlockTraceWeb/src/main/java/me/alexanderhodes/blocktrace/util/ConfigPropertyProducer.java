@@ -32,4 +32,12 @@ public class ConfigPropertyProducer {
         return properties.getProperty(key);
     }
 
+    public static String getBlockchainRestPath () {
+    	String value = properties.getProperty("blockchain_api");
+    	if (value != null && !value.isEmpty()) {
+    		return value;
+    	}
+    	return "http://localhost:3000/api/";
+    }
+    
 }

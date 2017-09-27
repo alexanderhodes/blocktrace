@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 import me.alexanderhodes.blocktrace.model.Tracking;
+import me.alexanderhodes.blocktrace.util.ConfigPropertyProducer;
 
 /**
  * Created by alexa on 24.09.2017.
@@ -91,7 +92,7 @@ public class TrackingService extends AbstractService<Tracking> implements Serial
 		try {
 			// send request for trackings
 			// TODO: URL anpassen
-			trackingList = sendRequest("http://localhost:3000/api/");
+			trackingList = sendRequest(ConfigPropertyProducer.getBlockchainRestPath());
 
 			// TODO: Trackings mit bestimmter trackingID auslesen
 		} catch (Exception e) {
@@ -110,7 +111,7 @@ public class TrackingService extends AbstractService<Tracking> implements Serial
 	public Tracking uploadTracking(Tracking tracking) {
 		try {
 			// send post request to blockchain
-			sendPost("http://localhost:3000/api/", tracking);
+			sendPost(ConfigPropertyProducer.getBlockchainRestPath(), tracking);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
