@@ -12,7 +12,9 @@ import java.awt.*;
  */
 public class Button extends JButton {
 
-    public Button (String text) {
+	private static final long serialVersionUID = 8218943146362038730L;
+
+	public Button (String text) {
         this.setBackground(Color.BLACK);
         this.setForeground(Color.WHITE);
 

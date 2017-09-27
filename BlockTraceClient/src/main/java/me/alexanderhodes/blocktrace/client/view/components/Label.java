@@ -10,7 +10,9 @@ import java.awt.*;
  */
 public class Label extends JLabel {
 
-    public Label (String text) {
+	private static final long serialVersionUID = 8539532714888086185L;
+
+	public Label (String text) {
         this.setFont(new Font("Arial", Font.PLAIN, ConfigurationProvider.ZOOM*13));
         this.setForeground(Color.black);
 

@@ -7,7 +7,9 @@ import java.io.Serializable;
  */
 public class Address implements Serializable {
 
-    private long id;
+	private static final long serialVersionUID = 1L;
+	
+	private long id;
     private String street;
     private String number;
     private String department;

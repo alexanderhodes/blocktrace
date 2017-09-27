@@ -1,15 +1,7 @@
 package me.alexanderhodes.blocktrace.client.view;
 
-import me.alexanderhodes.blocktrace.client.config.ConfigurationProvider;
-import me.alexanderhodes.blocktrace.client.model.*;
-import me.alexanderhodes.blocktrace.client.net.TrackingService;
-import me.alexanderhodes.blocktrace.client.view.components.Button;
-import me.alexanderhodes.blocktrace.client.view.components.Label;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -17,6 +9,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import me.alexanderhodes.blocktrace.client.config.ConfigurationProvider;
+import me.alexanderhodes.blocktrace.client.model.Address;
+import me.alexanderhodes.blocktrace.client.model.Shipment;
+import me.alexanderhodes.blocktrace.client.model.ShipmentStatus;
+import me.alexanderhodes.blocktrace.client.model.Tracking;
+import me.alexanderhodes.blocktrace.client.net.TrackingService;
+import me.alexanderhodes.blocktrace.client.view.components.Button;
+import me.alexanderhodes.blocktrace.client.view.components.Label;
 
 /**
  * Created by alexa on 26.09.2017.
@@ -70,16 +78,19 @@ public class TrackingOverview {
         // Button for generating new status
         Button btnNewStatus = new Button("Add Status");
 
+        // Initialize JPanel
         JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         frame.setContentPane(contentPane);
         contentPane.setLayout(null);
         contentPane.setBackground(Color.WHITE);
 
+        // Initialize JScrollPane for Scrolling in table
         JScrollPane pane = new JScrollPane();
         pane.setBounds(zoom * 10, zoom * 120, zoom * 620, zoom * 265);
         contentPane.add(pane);
 
+        // Initialize JTable
         table = new JTable();
         table.setBackground(Color.WHITE);
         table.setForeground(Color.BLACK);
@@ -89,14 +100,16 @@ public class TrackingOverview {
 
         pane.setViewportView(table);
 
+        // Set column names of table
         String[] head = {"No", "Timestamp", "Status"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(head);
-
+        // load trackings
         model = loadTrackingData(model);
 
         table.setModel(model);
+        // Set column width
         table.getColumnModel().getColumn(0).setPreferredWidth(zoom * 25);
         table.getColumnModel().getColumn(1).setPreferredWidth(zoom * 140);
         table.getColumnModel().getColumn(2).setPreferredWidth(zoom * 485);
@@ -135,12 +148,15 @@ public class TrackingOverview {
 
         frame.getContentPane().add(btnNewStatus);
 
+        // Add ActionListener for Button to generate new Shipment Status
         btnNewStatus.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	// Check if Shipment was already delivered
                 if (trackingList.size() < 12) {
+                	// Add new Tracking to List
                     Tracking tracking = updateTracking();
-
+                    // Add new Tracking to Table
                     DefaultTableModel model = (DefaultTableModel) table.getModel();
                     String timestamp = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(tracking.getTimestamp());
 
@@ -156,12 +172,19 @@ public class TrackingOverview {
         frame.setLocationRelativeTo(null);
     }
 
+    /**
+     * With this method the Tracking Data is loaded from web application.
+     * 
+     * @param model Table-Model representing current table
+     * @return updated Table-Model
+     */
     private DefaultTableModel loadTrackingData(DefaultTableModel model) {
-
+    	// Initialize List by Querying data from web application
         trackingList = trackingService.getTrackingList(shipment.getShipmentId());
 
         if (trackingList != null && trackingList.size() > 0) {
             for (int i = 0; i < trackingList.size(); i++) {
+            	// add Rows to Table Model
                 String date = new SimpleDateFormat("dd.MM.yyyy HH:mm").format(trackingList.get(i).getTimestamp());
                 model.addRow(new String[]{String.valueOf(i + 1), date, trackingList.get(i).getShipmentStatus().getName()});
             }
@@ -170,7 +193,13 @@ public class TrackingOverview {
         return model;
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     private Tracking updateTracking() {
+    	// Initialize new Tracking
         Tracking tracking = new Tracking();
         tracking.setShipment(shipment);
         tracking.setTimestamp(new Date());
@@ -189,12 +218,14 @@ public class TrackingOverview {
             }
 
         } else {
+        	// until now no tracking data was saved
             trackingList = new ArrayList<>();
             tracking.setShipmentStatus(ShipmentStatus.DATARECEIVED);
         }
 
         trackingList.add(tracking);
 
+        // Send Post-Request to web application
         trackingService.postTracking(tracking);
 
         return tracking;

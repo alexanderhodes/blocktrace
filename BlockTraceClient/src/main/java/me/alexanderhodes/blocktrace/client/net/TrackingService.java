@@ -1,28 +1,32 @@
 package me.alexanderhodes.blocktrace.client.net;
 
-import com.google.gson.*;
-import me.alexanderhodes.blocktrace.client.model.Tracking;
-
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import com.google.gson.Gson;
+
+import me.alexanderhodes.blocktrace.client.model.Tracking;
 
 /**
  * Created by alexa on 26.09.2017.
  */
 public class TrackingService extends AbstractService<Tracking> {
 
-    private static final String REST_API_URL = "http://localhost:8080/blocktrace/rest/tracking";
-
     public TrackingService () {
         super(Tracking.class);
     }
 
+    /**
+     * Send Request for receiving all tracking data
+     * 
+     * @return list containing all tracking data
+     */
     public List<Tracking> getTrackingList () {
         try {
+        	// send Request
             InputStream inputStream = requestInputStreamList("tracking");
-
+            // Create received entities
             Tracking[] trackings = createEntities(inputStream);
             List<Tracking> trackingList = new ArrayList<>();
 
@@ -37,13 +41,20 @@ public class TrackingService extends AbstractService<Tracking> {
         }
     }
 
+    /**
+     * Send Request for receiving tracking list for shipment
+     * 
+     * @param shipmentId id of shipment
+     * @return list containing tracking data for shipment
+     */
     public List<Tracking> getTrackingList (String shipmentId) {
         try {
+        	// send Request
             InputStream inputStream = requestInputStreamList("tracking", shipmentId);
-
+            // Create received entities
             Tracking[] trackings = createEntities(inputStream);
             List<Tracking> trackingList = new ArrayList<>();
-
+            
             for (Tracking t : trackings) {
                 trackingList.add(t);
             }
@@ -55,6 +66,12 @@ public class TrackingService extends AbstractService<Tracking> {
         }
     }
 
+    /**
+     * Uploading new Tracking to web application
+     * 
+     * @param tracking Tracking
+     * @return saved Tracking
+     */
     public Tracking postTracking (Tracking tracking) {
         try {
             return post(tracking, "tracking");
@@ -64,23 +81,37 @@ public class TrackingService extends AbstractService<Tracking> {
         }
     }
 
+    /**
+     * Creating Tracking object from received data
+     * 
+     * @param inputStream InputStream received from request
+     * @return Tracking object
+     * @throws Exception
+     */
     public Tracking createEntity(InputStream inputStream) throws Exception {
-        String json = readInputStream(inputStream);
-
+        // parsing InputStream to String
+    	String json = readInputStream(inputStream);
+    	// Initialize GSON for Parsing JSON String to object
         Gson gson = initGson();
-
+        // parsing String to object
         return gson.fromJson(json, Tracking.class);
     }
 
+    /**
+     * Creating Tracking objects from received data
+     * 
+     * @param inputStream InputStream received from request
+     * @return Tracking objects
+     * @throws Exception
+     */
     public Tracking[] createEntities (InputStream inputStream) throws Exception {
         Tracking[] trackings = new Tracking[]{};
-
+        // parsing InputStream to String
         String json = readInputStream(inputStream);
-
+    	// Initialize GSON for Parsing JSON String to object
         Gson gson = initGson();
-
-        trackings = gson.fromJson(json, trackings.getClass());
-        return trackings;
+        // parsing String to object
+        return gson.fromJson(json, trackings.getClass());
     }
 
 

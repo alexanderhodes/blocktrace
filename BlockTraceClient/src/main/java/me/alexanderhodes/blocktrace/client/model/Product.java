@@ -8,7 +8,9 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
-    private long id;
+	private static final long serialVersionUID = 1L;
+	
+	private long id;
     private double price;
 
     public Product () {

@@ -1,20 +1,22 @@
 package me.alexanderhodes.blocktrace.client.net;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 /**
  * Created by alexa on 26.09.2017.
@@ -32,6 +34,13 @@ public abstract class AbstractService<T> {
         this.type = type;
     }
 
+    /**
+     * 
+     * @param name
+     * @param param
+     * @return
+     * @throws Exception
+     */
     public InputStream requestInputStreamSingle(String name, String param) throws Exception {
         URL url = new URL(REST_API_URL + name + "/" + param);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -41,6 +50,12 @@ public abstract class AbstractService<T> {
         return urlConnection.getInputStream();
     }
 
+    /**
+     * 
+     * @param name
+     * @return
+     * @throws Exception
+     */
     public InputStream requestInputStreamList (String name) throws Exception {
         URL url = new URL(REST_API_URL + name + "/");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -50,6 +65,13 @@ public abstract class AbstractService<T> {
         return urlConnection.getInputStream();
     }
 
+    /**
+     * 
+     * @param name
+     * @param param
+     * @return
+     * @throws Exception
+     */
     public InputStream requestInputStreamList (String name, String param) throws Exception {
         URL url = new URL(REST_API_URL + name + "/" + param);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -59,6 +81,13 @@ public abstract class AbstractService<T> {
         return urlConnection.getInputStream();
     }
 
+    /**
+     * 
+     * @param object
+     * @param name
+     * @return
+     * @throws Exception
+     */
     public T post (T object, String name) throws Exception {
         String json = toJson(object);
 
@@ -72,11 +101,9 @@ public abstract class AbstractService<T> {
 
         byte[] utf8Json = json.getBytes("UTF-8");
 
-
         DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
         outputStream.write(utf8Json, 0, utf8Json.length);
 
-//        outputStream.writeBytes(json);
         outputStream.flush();
         outputStream.close();
 
@@ -84,22 +111,24 @@ public abstract class AbstractService<T> {
         return receivedObject;
     }
 
+    /**
+     * 
+     * @param inputStream
+     * @return
+     * @throws Exception
+     */
     public T createEntity(InputStream inputStream) throws Exception {
         String json = readInputStream(inputStream);
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-            public Date deserialize(JsonElement jsonElement, Type typeOf, JsonDeserializationContext context)
-                    throws JsonParseException {
-                return new Date(jsonElement.getAsJsonPrimitive().getAsLong());
-            }
-        });
-
-        Gson gson = builder.create();
+        Gson gson = initGson();
 
         return gson.fromJson(json, type);
     }
 
+    /**
+     * 
+     * @return
+     */
     public Gson initGson () {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
@@ -112,6 +141,12 @@ public abstract class AbstractService<T> {
         return builder.create();
     }
 
+    /**
+     * 
+     * @param inputStream
+     * @return
+     * @throws Exception
+     */
     public String readInputStream (InputStream inputStream) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String inputLine = null;
@@ -125,6 +160,11 @@ public abstract class AbstractService<T> {
         return buffer.toString();
     }
 
+    /**
+     * 
+     * @param object
+     * @return
+     */
     public String toJson(T object) {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new JsonSerializer<Date>() {

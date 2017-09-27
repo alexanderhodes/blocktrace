@@ -1,7 +1,5 @@
 package me.alexanderhodes.blocktrace.client.config;
 
-import java.awt.*;
-
 /**
  * Created by alexa on 26.09.2017.
  */

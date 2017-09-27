@@ -7,6 +7,8 @@ import java.util.Date;
  * Created by alexa on 23.09.2017.
  */
 public class Shipment implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
     private String shipmentId;
     private String referenceNumber;
