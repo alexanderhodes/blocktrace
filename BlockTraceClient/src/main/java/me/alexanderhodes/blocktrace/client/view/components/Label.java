@@ -12,11 +12,11 @@ public class Label extends JLabel {
 
 	private static final long serialVersionUID = 8539532714888086185L;
 
-	public Label (String text) {
-        this.setFont(new Font("Arial", Font.PLAIN, ConfigurationProvider.ZOOM*13));
-        this.setForeground(Color.black);
+	public Label(String text) {
+		this.setFont(new Font("Arial", Font.PLAIN, ConfigurationProvider.getZoom() * 13));
+		this.setForeground(Color.black);
 
-        this.setText(text);
-    }
+		this.setText(text);
+	}
 
 }

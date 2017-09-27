@@ -31,7 +31,7 @@ import me.alexanderhodes.blocktrace.client.view.components.Label;
  */
 public class TrackingOverview {
 
-    private final int zoom = ConfigurationProvider.ZOOM;
+    private final int zoom = ConfigurationProvider.getZoom();
     private Shipment shipment;
     private JTable table;
     private List<Tracking> trackingList;

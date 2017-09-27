@@ -14,16 +14,16 @@ public class Button extends JButton {
 
 	private static final long serialVersionUID = 8218943146362038730L;
 
-	public Button (String text) {
-        this.setBackground(Color.BLACK);
-        this.setForeground(Color.WHITE);
+	public Button(String text) {
+		this.setBackground(Color.BLACK);
+		this.setForeground(Color.WHITE);
 
-        this.setFont(new Font("Arial", Font.PLAIN, ConfigurationProvider.ZOOM*13));
-        this.setText(text);
+		this.setFont(new Font("Arial", Font.PLAIN, ConfigurationProvider.getZoom() * 13));
+		this.setText(text);
 
-        Border border = new LineBorder(Color.WHITE, 4);
-        this.setBorderPainted(true);
-        this.setBorder(border);
-    }
+		Border border = new LineBorder(Color.WHITE, 4);
+		this.setBorderPainted(true);
+		this.setBorder(border);
+	}
 
 }

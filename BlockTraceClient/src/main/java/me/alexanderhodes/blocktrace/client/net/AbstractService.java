@@ -18,12 +18,14 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import me.alexanderhodes.blocktrace.client.config.ConfigurationProvider;
+
 /**
  * Created by alexa on 26.09.2017.
  */
 public abstract class AbstractService<T> {
 
-    private static final String REST_API_URL = "http://localhost:8080/blocktrace/rest/";
+    private static final String REST_API_URL = ConfigurationProvider.getRestPath();
 
     private Class<T> type;
 
