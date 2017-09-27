@@ -1,10 +1,5 @@
 package me.alexanderhodes.blocktrace.service;
 
-import com.google.gson.*;
-import me.alexanderhodes.blocktrace.model.Tracking;
-
-import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -17,114 +12,174 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.persistence.TypedQuery;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
+import me.alexanderhodes.blocktrace.model.Tracking;
+
 /**
  * Created by alexa on 24.09.2017.
  */
 @Stateless
 public class TrackingService extends AbstractService<Tracking> implements Serializable {
 
-    public TrackingService () {
-        super(Tracking.class);
-    }
+	private static final long serialVersionUID = 1L;
 
-    public void persistTracking (Tracking tracking) {
-        entityManager.persist(tracking);
-    }
+	public TrackingService() {
+		super(Tracking.class);
+	}
 
-    public List<Tracking> getTrackingListShipment (String shipmentId) {
-        TypedQuery<Tracking> query = entityManager.createNamedQuery(Tracking.GET_TRACKINGS_SHIPMENT, Tracking.class);
-        query.setParameter("shipmentId", shipmentId);
+	/**
+	 * Save tracking in database
+	 * 
+	 * @param tracking Tracking which has to be saved in database
+	 */
+	public void persistTracking(Tracking tracking) {
+		entityManager.persist(tracking);
+	}
 
-        List<Tracking> trackings = query.getResultList();
-        return trackings;
-    }
+	/**
+	 * query trackings for shipment from database
+	 * 
+	 * @param shipmentId id of shipment
+	 * @return list of trackings for shipment
+	 */
+	public List<Tracking> getTrackingListShipment(String shipmentId) {
+		TypedQuery<Tracking> query = entityManager.createNamedQuery(Tracking.GET_TRACKINGS_SHIPMENT, Tracking.class);
+		// set parameter
+		query.setParameter("shipmentId", shipmentId);
 
-    public List<Tracking> getTrackingList () {
-        List<Tracking> trackingList = new ArrayList<>();
+		return query.getResultList();
+	}
 
-        try {
-            // TODO: URL anpassen
-            trackingList = listAll();
-//            trackingList = sendRequest("http://localhost:3000/api/");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	/**
+	 * query all trackings from Blockchain
+	 * 
+	 * @return list of all stored trackings
+	 */
+	public List<Tracking> getTrackingList() {
+		List<Tracking> trackingList = new ArrayList<>();
 
-        return trackingList;
-    }
+		try {
+			// send request for all trackings
+			// TODO: URL anpassen
+			trackingList = listAll();
+			// trackingList = sendRequest("http://localhost:3000/api/");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    public List<Tracking> getTrackingList (String trackingId) {
-        List<Tracking> trackingList = new ArrayList<>();
+		return trackingList;
+	}
 
-        try {
-            // TODO: URL anpassen
-            trackingList = sendRequest("http://localhost:3000/api/");
+	/**
+	 * query trackings for shipment from Blockchain
+	 * 
+	 * @param trackingId id of shipment
+	 * @return list of trackings for shipment
+	 */
+	public List<Tracking> getTrackingList(String trackingId) {
+		List<Tracking> trackingList = new ArrayList<>();
 
-            // TODO: Trackings mit bestimmter trackingID auslesen
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		try {
+			// send request for trackings
+			// TODO: URL anpassen
+			trackingList = sendRequest("http://localhost:3000/api/");
 
-        return trackingList;
-    }
+			// TODO: Trackings mit bestimmter trackingID auslesen
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    public Tracking uploadTracking (Tracking tracking) {
-        try {
-            sendPost("http://localhost:3000/api/", tracking);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		return trackingList;
+	}
 
-        return tracking;
-    }
+	/**
+	 * upload tracking to blockchain
+	 * 
+	 * @param tracking that has to be uploaded
+	 * @return uploaded tracking
+	 */
+	public Tracking uploadTracking(Tracking tracking) {
+		try {
+			// send post request to blockchain
+			sendPost("http://localhost:3000/api/", tracking);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    private List<Tracking> sendRequest (String url) throws Exception {
-        URL obj = new URL(url);
+		return tracking;
+	}
 
-        HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
-        urlConnection.setRequestMethod("GET");
+	/**
+	 * 
+	 * 
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
+	private List<Tracking> sendRequest(String url) throws Exception {
+		URL obj = new URL(url);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-        String inputLine;
-        StringBuffer buffer = new StringBuffer();
+		HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
+		urlConnection.setRequestMethod("GET");
 
-        while ((inputLine = reader.readLine()) != null) {
-            buffer.append(inputLine);
-        }
-        reader.close();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+		String inputLine;
+		StringBuffer buffer = new StringBuffer();
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-            public Date deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                return new Date(jsonElement.getAsJsonPrimitive().getAsLong());
-            }
-        });
+		while ((inputLine = reader.readLine()) != null) {
+			buffer.append(inputLine);
+		}
+		reader.close();
 
-        Gson gson = builder.create();
-        Tracking[] trackings = gson.fromJson(buffer.toString(), Tracking[].class);
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+			public Date deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				return new Date(jsonElement.getAsJsonPrimitive().getAsLong());
+			}
+		});
 
-        return Arrays.asList(trackings);
-    }
+		Gson gson = builder.create();
+		Tracking[] trackings = gson.fromJson(buffer.toString(), Tracking[].class);
 
-    private void sendPost (String url, Tracking tracking) throws Exception {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
+		return Arrays.asList(trackings);
+	}
 
-        String json = gson.toJson(tracking);
+	/**
+	 * 
+	 * 
+	 * @param url
+	 * @param tracking
+	 * @throws Exception
+	 */
+	private void sendPost(String url, Tracking tracking) throws Exception {
+		GsonBuilder builder = new GsonBuilder();
+		Gson gson = builder.create();
 
-        URL obj = new URL(url);
+		String json = gson.toJson(tracking);
 
-        HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
-        urlConnection.setRequestMethod("POST");
-        urlConnection.setRequestProperty("Content-Type", "application/json");
+		URL obj = new URL(url);
 
-        urlConnection.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-        wr.writeBytes(json);
-        wr.flush();
-        wr.close();
+		HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
+		urlConnection.setRequestMethod("POST");
+		urlConnection.setRequestProperty("Content-Type", "application/json");
 
-        System.out.println(urlConnection.getResponseCode());
-    }
+		urlConnection.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
+		wr.writeBytes(json);
+		wr.flush();
+		wr.close();
+
+		System.out.println(urlConnection.getResponseCode());
+	}
 
 }

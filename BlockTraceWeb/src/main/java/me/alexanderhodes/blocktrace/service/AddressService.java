@@ -9,7 +9,9 @@ import java.io.Serializable;
  */
 public class AddressService extends AbstractService<Address> implements Serializable {
 
-    public AddressService () {
+	private static final long serialVersionUID = 8199894158799175499L;
+
+	public AddressService () {
         super(Address.class);
     }
 

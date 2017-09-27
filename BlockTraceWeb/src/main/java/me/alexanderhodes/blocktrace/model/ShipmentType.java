@@ -1,7 +1,15 @@
 package me.alexanderhodes.blocktrace.model;
 
-import javax.persistence.*;
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * Created by alexa on 23.09.2017.
@@ -11,6 +19,8 @@ import java.io.Serializable;
 )
 @Entity
 public class ShipmentType implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     public static final String GET_SHIPMENTTYPE_ID = "ShipmentType.Id";
     static final String GET_SHIPMENTTYPE_ID_QUERY = "SELECT s FROM ShipmentType s WHERE s.id = :id";

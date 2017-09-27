@@ -27,121 +27,129 @@ import java.util.List;
 @RequestScoped
 public class TrackBean implements Serializable {
 
-    @Inject
-    private TrackingService trackingService;
+	private static final long serialVersionUID = 1L;
 
-    @Inject
-    private ShipmentService shipmentService;
+	@Inject
+	private TrackingService trackingService;
 
-    private SimpleDateFormat dateFormat;
-    private String trackingId;
-    private List<Tracking> trackingList;
-    private int percentage;
-    private int size;
+	@Inject
+	private ShipmentService shipmentService;
 
-    @PostConstruct
-    public void init () {
-        this.trackingList = new ArrayList<>();
-        this.dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-    }
+	private SimpleDateFormat dateFormat;
+	private String trackingId;
+	private List<Tracking> trackingList;
+	private int percentage;
+	private int size;
 
-    public SimpleDateFormat getDateFormat() {
-        return dateFormat;
-    }
+	@PostConstruct
+	public void init() {
+		this.trackingList = new ArrayList<>();
+		this.dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+	}
 
-    public void setDateFormat(SimpleDateFormat dateFormat) {
-        this.dateFormat = dateFormat;
-    }
+	public SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
 
-    public String getTrackingId() {
-        return trackingId;
-    }
+	public void setDateFormat(SimpleDateFormat dateFormat) {
+		this.dateFormat = dateFormat;
+	}
 
-    public void setTrackingId(String trackingId) {
-        this.trackingId = trackingId;
-    }
+	public String getTrackingId() {
+		return trackingId;
+	}
 
-    public List<Tracking> getTrackingList() {
-        return trackingList;
-    }
+	public void setTrackingId(String trackingId) {
+		this.trackingId = trackingId;
+	}
 
-    public void setTrackingList(List<Tracking> trackingList) {
-        this.trackingList = trackingList;
-    }
+	public List<Tracking> getTrackingList() {
+		return trackingList;
+	}
 
-    public int getPercentage() {
-        return percentage;
-    }
+	public void setTrackingList(List<Tracking> trackingList) {
+		this.trackingList = trackingList;
+	}
 
-    public void setPercentage(int percentage) {
-        this.percentage = percentage;
-    }
+	public int getPercentage() {
+		return percentage;
+	}
 
-    public int getSize() {
-        return size;
-    }
+	public void setPercentage(int percentage) {
+		this.percentage = percentage;
+	}
 
-    public void setSize(int size) {
-        this.size = size;
-    }
+	public int getSize() {
+		return size;
+	}
 
-    /**
-     *
-     * @return
-     */
-    public String trackShipment () {
-        if (trackingId == null || trackingId.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
-                    new FacesMessage(MessagesProducer.getValue("track1")));
-            return "";
-        }
+	public void setSize(int size) {
+		this.size = size;
+	}
 
-        Shipment shipment = shipmentService.findShipment(trackingId);
+	/**
+	 * track shipments by loading data from database
+	 *
+	 * @return
+	 */
+	public String trackShipment() {
+		// check if shipment id was entered
+		if (trackingId == null || trackingId.isEmpty()) {
+			// shipment id was not entered
+			FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
+					new FacesMessage(MessagesProducer.getValue("track1")));
+			return "";
+		}
+		// query shipment from database
+		Shipment shipment = shipmentService.findShipment(trackingId);
+		// check if shipment exists
+		if (shipment == null) {
+			// shipment does not exist
+			FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
+					new FacesMessage(MessagesProducer.getValue("track2").replace("TRACKINGNO", trackingId)));
+			return "";
+		} else {
+			// read data from blockchain
+			this.trackingList = trackingService.getTrackingListShipment(trackingId);
+			// check if tracking information are available
+			if (trackingList.size() == 0) {
+				// no tracking information are available
+				FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
+						new FacesMessage("There are no tracking information available for shipment number " + trackingId
+								+ ". Please try again later."));
+				return "";
+			}
+			// calculate percentage for progress bar
+			calculatePercentage();
+			// calculate int for progress bar
+			requestStatusAsInt();
 
-        if (shipment == null) {
-            FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
-                    new FacesMessage(MessagesProducer.getValue("track2").replace("TRACKINGNO", trackingId)));
-            return "";
-        } else {
-            // Daten aus Blockchain lesen und anzeigen
-            this.trackingList = trackingService.getTrackingListShipment(trackingId);
+			return "";
+		}
+	}
 
-            if (trackingList.size() == 0) {
-                FacesContext.getCurrentInstance().addMessage("trackForm:trackingNumber",
-                        new FacesMessage("There are no tracking information available for shipment number " +
-                        trackingId + ". Please try again later." ));
-                return "";
-            }
+	/**
+	 * percentage that is used in progress bar
+	 */
+	private void calculatePercentage() {
+		if (trackingList == null || trackingList.size() == 0) {
+			this.percentage = 0;
+		} else if (trackingList.size() >= 12) {
+			this.percentage = 100;
+		} else {
+			this.percentage = (trackingList.size() + 1) * 100;
+			this.percentage = this.percentage / 13;
+		}
+	}
 
-            calculatePercentage();
-            requestStatusAsInt();
-
-            return "";
-        }
-    }
-
-    /**
-     *
-     */
-    private void calculatePercentage () {
-        if (trackingList == null || trackingList.size() == 0) {
-            this.percentage = 0;
-        } else if (trackingList.size() >= 12) {
-            this.percentage = 100;
-        } else {
-            this.percentage = (trackingList.size() + 1) * 100;
-            this.percentage = this.percentage / 13;
-        }
-    }
-
-    /**
-     *
-     */
-    private void requestStatusAsInt () {
-        if (trackingList == null) {
-            this.size =  0;
-        }
-        this.size = trackingList.size();
-    }
+	/**
+	 * number that is used in progress bar
+	 */
+	private void requestStatusAsInt() {
+		if (trackingList == null) {
+			this.size = 0;
+		}
+		this.size = trackingList.size();
+	}
 
 }

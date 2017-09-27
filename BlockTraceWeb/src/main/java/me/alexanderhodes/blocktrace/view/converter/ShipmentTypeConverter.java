@@ -1,15 +1,14 @@
 package me.alexanderhodes.blocktrace.view.converter;
 
-import me.alexanderhodes.blocktrace.model.Shipment;
-import me.alexanderhodes.blocktrace.model.ShipmentType;
-import me.alexanderhodes.blocktrace.service.ShipmentTypeService;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
+
+import me.alexanderhodes.blocktrace.model.ShipmentType;
+import me.alexanderhodes.blocktrace.service.ShipmentTypeService;
 
 /**
  * Created by alexa on 24.09.2017.

@@ -1,11 +1,15 @@
 package me.alexanderhodes.blocktrace.model;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 
 /**
  * Created by alexa on 23.09.2017.
@@ -15,6 +19,8 @@ import java.util.Date;
 })
 @Entity
 public class Shipment implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     public static final String GETLATESTSHIPMENT = "Latest Shipment";
     public static final String GETLATESTSHIPMENT_QUERY = "SELECT s FROM Shipment s ORDER BY s.created DESC";

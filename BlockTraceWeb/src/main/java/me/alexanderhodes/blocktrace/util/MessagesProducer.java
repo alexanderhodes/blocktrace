@@ -18,6 +18,12 @@ public class MessagesProducer {
         }
     }
 
+    /**
+     * Receive Message for specific key
+     * 
+     * @param key for identifying message
+     * @return message
+     */
     public static String getValue (String key) {
         return resourceBundle.getString(key);
     }

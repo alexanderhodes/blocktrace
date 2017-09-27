@@ -21,6 +21,12 @@ public class ConfigPropertyProducer {
         }
     }
 
+    /**
+     * Returning of property that is stored in properties file
+     * 
+     * @param injectionPoint Point of injecting this class
+     * @return value of key
+     */
     public static String produceConfigProperty (InjectionPoint injectionPoint) {
         String key = injectionPoint.getAnnotated().getAnnotation(ConfigProperty.class).toString();
         return properties.getProperty(key);

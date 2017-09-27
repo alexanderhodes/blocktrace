@@ -1,13 +1,20 @@
 package me.alexanderhodes.blocktrace.model;
 
-import javax.persistence.*;
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Created by alexa on 23.09.2017.
  */
 @Entity
 public class Address implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
