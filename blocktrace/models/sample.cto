@@ -1,0 +1,17 @@
+namespace me.alexanderhodes.blocktrace
+
+asset Tracking identified by id {
+  o String id
+  o String shipment
+  o String shipmentStatus
+  o DateTime timestamp
+  o String place
+}
+
+participant TrackingParticipant identified by participantKey {
+  o String participantKey
+}
+
+transaction Track  {
+  --> Tracking tracking
+}

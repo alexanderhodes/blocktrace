@@ -1,0 +1,13 @@
+query selectTrackingByShipment {
+  description: "Select stored trackings for one shipment that is defined in a parameter"
+  statement:
+      SELECT me.alexanderhodes.blocktrace.Tracking
+          WHERE (shipment == _$shipment)
+}
+
+query latestTracking {
+  description: "Select latest tracking that is stored in Blockchain."
+  statement:
+      SELECT me.alexanderhodes.blocktrace.Tracking
+          ORDER BY [id DESC]
+}

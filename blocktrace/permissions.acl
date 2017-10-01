@@ -1,0 +1,27 @@
+/**
+ * Access control rules for mynetwork
+ */
+rule EverybodyCanReadEverything {
+  description: "Allow all participants read access to all resources"
+  participant: "me.alexanderhodes.blocktrace.TrackingParticipant"
+  operation: READ
+  resource: "me.alexanderhodes.blocktrace.*"
+  action: ALLOW
+}
+
+rule EverybodyCanSubmitTransaction {
+  description: "Allow all participants to submit transactions"
+  participant: "me.alexanderhodes.blocktrace.TrackingParticipant"
+  operation: CREATE
+  resource: "me.alexanderhodes.blocktrace.*"
+  action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.Participant"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
