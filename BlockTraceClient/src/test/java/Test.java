@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class Test {
 
-    @org.junit.Test
+//    @org.junit.Test
     public void testResolution () {
 
     }
 
-    @org.junit.Test
+//    @org.junit.Test
     public void testRest () {
         ShipmentService shipmentService = new ShipmentService();
         List<Shipment> shipments = shipmentService.requestShipments();

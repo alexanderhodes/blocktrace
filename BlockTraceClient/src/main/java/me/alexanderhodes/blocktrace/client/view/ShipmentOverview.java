@@ -72,9 +72,9 @@ public class ShipmentOverview {
 		table = new JTable();
 		table.setBackground(Color.WHITE);
 		table.setForeground(Color.BLACK);
-		table.setFont(new Font("Arial", Font.PLAIN, zoom * 15));
+		table.setFont(new Font("Arial", Font.PLAIN, zoom * 12));
 		table.setRowHeight(zoom * 20);
-		table.getTableHeader().setFont(new Font("Arial", Font.PLAIN, zoom * 15));
+		table.getTableHeader().setFont(new Font("Arial", Font.PLAIN, zoom * 14));
 
 		pane.setViewportView(table);
 
