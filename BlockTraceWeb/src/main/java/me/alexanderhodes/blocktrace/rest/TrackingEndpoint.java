@@ -1,5 +1,6 @@
 package me.alexanderhodes.blocktrace.rest;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,7 +15,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import me.alexanderhodes.blocktrace.model.Tracking;
+import me.alexanderhodes.blocktrace.service.ShipmentService;
 import me.alexanderhodes.blocktrace.service.TrackingService;
+import me.alexanderhodes.blocktrace.util.TrackingComparator;
 
 /**
  * Created by alexa on 23.09.2017.
@@ -24,6 +27,9 @@ public class TrackingEndpoint {
 
     @Inject
     private TrackingService trackingService;
+
+    @Inject
+    private ShipmentService shipmentService;
 
     /**
      * Endpoint for creating a tracking
@@ -35,13 +41,10 @@ public class TrackingEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createTracking (Tracking tracking) {
-       // TODO: zum testen
-        trackingService.persistTracking(tracking);
         // Upload tracking to blockchain
-     //   trackingService.uploadTracking(tracking);
+        tracking = trackingService.uploadTracking(tracking);
         // send response to client
-        
-        
+
         return Response.created(UriBuilder.fromResource(Tracking.class).path(tracking.getShipment().getShipmentId())
         		.build()).build();
     }
@@ -71,11 +74,8 @@ public class TrackingEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTrackingList (@PathParam("shipmentId") String shipmentId) {
         // request list of shipments
-    	List<Tracking> trackingList = trackingService.getTrackingListShipment(shipmentId);
-        // TODO: zum testen
-//        List<Tracking> trackingList = trackingService.getTrackingList(shipmentId);
+        List<Tracking> trackingList = trackingService.getTrackingList(shipmentId);
     	// send response to client
         return Response.ok(trackingList).build();
     }
-
 }

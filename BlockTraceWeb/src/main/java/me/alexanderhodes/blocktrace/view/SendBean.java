@@ -185,18 +185,6 @@ public class SendBean implements Serializable {
 				e.printStackTrace();
 			}
 
-			// send E-Mail Notification
-			if (shipment.isEmailNotification()) {
-				// TODO: Subject und Message anpassen
-
-				Email email = new Email();
-				email.setReceiver(receiver.getEmail());
-				email.setSubject("Sendung versendet");
-				email.setMessage(shipment.getShipmentId());
-
-				// emailService.send(email);
-			}
-
 			// create first tracking information
 			Tracking tracking = new Tracking(shipment, ShipmentStatus.DATARECEIVED, new Date(), "");
 			trackingService.uploadTracking(tracking);

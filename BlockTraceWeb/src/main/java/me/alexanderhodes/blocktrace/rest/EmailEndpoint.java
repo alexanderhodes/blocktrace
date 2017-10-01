@@ -32,17 +32,17 @@ public class EmailEndpoint {
 	 */
 	@GET
 	public Response sendEmail(@QueryParam("shipment") String shipmentId, @QueryParam("message") int message) {
-		// TODO: E-Mail mit entsprechendem Inhalt an Empfänger der Sendung
-		// senden
-		Shipment shipment = shipmentService.findShipment(shipmentId);
-		Customer receiver = shipment.getReceiver();
-
-		Email email = new Email();
-		email.setReceiver("alexander.hodes@live.com");
-		email.setMessage("Shipment: " + shipmentId + " message " + message);
-		email.setSubject("Test");
-
-		emailService.send(email);
+//		System.out.println("Method send mail called with shipmentId " + shipmentId + " message " + message);
+//		// senden
+//		Shipment shipment = shipmentService.findShipment(shipmentId);
+//		Customer receiver = shipment.getReceiver();
+//
+//		Email email = new Email();
+//		email.setReceiver("");
+//		email.setMessage("Shipment: " + shipmentId + " message " + message);
+//		email.setSubject("Test");
+//
+//		emailService.send(email);
 
 		return Response.accepted().build();
 	}

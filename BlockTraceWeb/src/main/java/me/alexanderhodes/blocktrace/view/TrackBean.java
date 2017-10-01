@@ -110,7 +110,7 @@ public class TrackBean implements Serializable {
 			return "";
 		} else {
 			// read data from blockchain
-			this.trackingList = trackingService.getTrackingListShipment(trackingId);
+			this.trackingList = trackingService.getTrackingList(trackingId);
 			// check if tracking information are available
 			if (trackingList.size() == 0) {
 				// no tracking information are available

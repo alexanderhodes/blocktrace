@@ -26,11 +26,16 @@ public class EmailService {
         return (Session) initialContext.lookup(EMAIL_SESSION_JNDI_PATH);
     }
 
+    /**
+     * Sending email
+     *
+     * @param email E-Mail with attributes for subject, content, receiver and sender
+     */
     public void send (Email email) {
         try {
             MimeMessage m = new MimeMessage(createMailSession());
             // Umwandlung der E-Mail Adressen in Address
-            Address from = new InternetAddress("havanna.com");
+            Address from = new InternetAddress("blocktrace@gmail.com");
             Address to = new InternetAddress(email.getReceiver());
             // setzen der E-Mail Adresse des Senders
             m.setFrom(from);

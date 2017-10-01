@@ -37,7 +37,23 @@ public class ConfigPropertyProducer {
     	if (value != null && !value.isEmpty()) {
     		return value;
     	}
-    	return "http://localhost:3000/api/";
+    	return "http://localhost:3000/api/Tracking";
     }
-    
+
+    public static String getBlockchainQueriesPath () {
+        String value = properties.getProperty("blockchain_queries");
+        if (value != null && !value.isEmpty()) {
+            return value;
+        }
+        return "http://localhost:3000/api/queries";
+    }
+
+    public static String getBlockchainTrackPath () {
+        String value = properties.getProperty("blockchain_track");
+        if (value != null && !value.isEmpty()) {
+            return value;
+        }
+        return "http://localhost:3000/api/Track";
+    }
+
 }
